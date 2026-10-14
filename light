@@ -1,0 +1,57 @@
+
+const int red = 9;
+const int green = 10;
+const int blue = 11;
+const int button = 2;
+
+int fireType = 0;
+int lastButtonState = HIGH;
+
+void setup() {
+  pinMode(red, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(blue, OUTPUT);
+  pinMode(button, INPUT_PULLUP);
+
+  randomSeed(analogRead(A0));
+}
+
+void loop() {
+  int buttonState = digitalRead(button);
+
+  if (lastButtonState == HIGH && buttonState == LOW) {
+    fireType++;
+    if (fireType == 4) fireType = 0;
+  }
+
+  lastButtonState = buttonState;
+
+  int r, g, b;
+
+  if (fireType == 0) {
+    r = random(0, 40);
+    g = random(200, 240);
+    b = 255;
+  }
+  else if (fireType == 1) {
+    r = random(230, 250);
+    g = random(0, 90);
+    b = r;
+  }
+  else if (fireType == 2) {
+    r = random(230, 250);
+    g = r;
+    b = random(0, 90);
+  }
+  else {
+    r = random(0, 90);
+    g = random(200, 255);
+    b = r;
+  }
+
+  analogWrite(red, r);
+  analogWrite(green, g);
+  analogWrite(blue, b);
+
+  delay(random(50, 120));
+}
